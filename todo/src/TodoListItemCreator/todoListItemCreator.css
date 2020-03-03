@@ -1,0 +1,14 @@
+.item-creator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.item-creator i {
+    color: teal;
+}
+
+.input-field {
+    width: 100%;
+    margin-right: 20px;
+}
