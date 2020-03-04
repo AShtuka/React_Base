@@ -1,0 +1,16 @@
+.card {
+    margin-bottom: 20px;
+}
+
+.card .row {
+    padding-bottom: 0;
+}
+
+.card-footer {
+    padding: 0;
+}
+
+.pagination {
+    justify-content: center;
+    margin-top: 1rem;
+}
