@@ -26,8 +26,28 @@ const todoList = [
 
 export default class App extends React.Component {
     ID = 10;
+
     state = {
-      todoData: todoList,
+        todoData: todoList,
+        filter: 'All',
+        term:''
+    };
+
+    filter = (filter, items) => {
+        switch (filter) {
+            case 'All': return items;
+            case 'Active': return items.filter(item => !item.isDone);
+            case 'Done': return items.filter(item => item.isDone);
+            default: return items;
+        };
+    };
+
+    filterChange = filter => {
+        this.setState({filter});
+    };
+
+    searchTermChange = term => {
+        this.setState({term});
     };
 
     setItemsProps = (itemsList, propName, id) => {
@@ -66,12 +86,27 @@ export default class App extends React.Component {
         });
     };
 
+    search = (items, term) => {
+        if (term.length === 0) return items;
+        return items.filter(item => item.label.toLowerCase()
+                                    .indexOf(term.toLowerCase()) > -1);
+    };
+
     render() {
-        const {todoData} = this.state;
+        const {todoData, filter, term} = this.state;
+        const visibleItems = this.filter(filter, this.search(todoData, term));
+        const doneTask = todoData.filter(item => item.isDone).length;
+        const activeTask = todoData.length - doneTask;
+
         return (
             <div className='container'>
-                <Header />
-                <TodoList todoList={todoData}
+                <Header activeTask={activeTask}
+                        doneTask={doneTask}
+                        statusFilter={filter}
+                        filterChange={this.filterChange}
+                        searchTermChange={this.searchTermChange}
+                />
+                <TodoList todoList={visibleItems}
                           setImportant={this.setImportant}
                           setDone={this.setDone}
                           deleteItem={this.deleteItem}
