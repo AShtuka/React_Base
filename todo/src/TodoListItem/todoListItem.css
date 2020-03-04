@@ -2,6 +2,10 @@
     margin: 0 5px;
 }
 
+.todo-list-item-done {
+    text-decoration: line-through;
+}
+
 .del {
     color: darkgrey;
 }

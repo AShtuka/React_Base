@@ -9,6 +9,10 @@
 }
 
 .input-field {
-    width: 100%;
+    width: 75%;
     margin-right: 20px;
+}
+
+.item-creator .btn {
+    width: 20%;
 }
