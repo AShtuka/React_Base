@@ -3,3 +3,7 @@
     background-color: transparent;
     border: none;
 }
+
+.card-img {
+    height: 100%;
+}
