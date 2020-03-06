@@ -2,8 +2,7 @@ import React from "react";
 
 export default ({starship: {name, model, starshipClass, speed, id, manufacturer, cost, crew, length, passengers, cargoCapacity}}) => {
     return (
-        <div className="card mb-3">
-            <div className="row no-gutters">
+            <>
                 <div className="col-md-4">
                     <img src={`https://starwars-visualguide.com/assets/img/starships/${id}.jpg`}
                          className="card-img"
@@ -25,7 +24,6 @@ export default ({starship: {name, model, starshipClass, speed, id, manufacturer,
                         </ul>
                     </div>
                 </div>
-            </div>
-        </div>
+            </>
     )
 }

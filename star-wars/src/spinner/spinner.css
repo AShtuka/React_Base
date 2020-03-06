@@ -80,6 +80,7 @@
     display: inline-block;
     overflow: hidden;
     background: none;
+    margin-left: calc(50% - 95px);
 }
 .ldio-fkskviqa66f {
     width: 100%;
