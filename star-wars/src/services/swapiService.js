@@ -40,6 +40,7 @@ export default class SwapiService extends React.Component {
 
     getStarships = async (id) => {
         const starship = await this.getResource(`starships/${id}/`);
+        console.log(starship);
         return this._transformStarship(starship);
     };
 

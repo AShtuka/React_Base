@@ -7,3 +7,7 @@
 .card-img {
     height: 100%;
 }
+
+.card.main {
+    min-height: 272px;
+}

@@ -5,6 +5,8 @@ import StarshipDetails from './starshipDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
 
+const starShipExistID = [5, 9, 10, 11, 12, 13, 21, 22, 23, 27, 28, 29, 31, 39, 40, 41, 43, 47, 48];
+
 export default class MainInfoCard extends React.Component {
     swapiServide = new SwapiService();
 
@@ -14,10 +16,9 @@ export default class MainInfoCard extends React.Component {
         error: false
     };
 
-    constructor() {
-        super();
+    componentDidMount() {
         this.updateData();
-    }
+    };
 
     onStarshipLoaded = starship => {
         this.setState({starship, loading: false})
@@ -28,7 +29,7 @@ export default class MainInfoCard extends React.Component {
     };
 
     updateData = () => {
-        const id = 12;
+        const id = starShipExistID[Math.floor(Math.random()*starShipExistID.length)];
         this.swapiServide
             .getStarships(id)
             .then(this.onStarshipLoaded)
@@ -42,7 +43,7 @@ export default class MainInfoCard extends React.Component {
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <StarshipDetails starship={this.state.starship}/> : null;
 
-        return (<div className='card mb-3'>
+        return (<div className='card mb-3 main'>
                     <div className='row no-gutters'>
                         {errorMassage}
                         {spinner}
