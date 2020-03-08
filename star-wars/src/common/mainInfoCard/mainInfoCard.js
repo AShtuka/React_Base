@@ -1,17 +1,15 @@
 import React from "react";
 import './main-info-card.css';
-import SwapiService from "../services/swapiService";
-import StarshipDetails from './starshipDetails';
+import SwapiService from "../../services/swapiService";
+import SpeciesDetails from './speciesDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
 
-const starShipExistID = [5, 9, 10, 11, 12, 13, 21, 22, 23, 27, 28, 29, 31, 39, 40, 41, 43, 47, 48];
-
 export default class MainInfoCard extends React.Component {
-    swapiServide = new SwapiService();
+    swapiService = new SwapiService();
 
     state = {
-        starship: {},
+        item: {},
         loading: true,
         error: false
     };
@@ -20,8 +18,15 @@ export default class MainInfoCard extends React.Component {
         this.updateData();
     };
 
-    onStarshipLoaded = starship => {
-        this.setState({starship, loading: false})
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.selectedItem !== prevProps.selectedItem) {
+            this.setState({loading: true});
+            this.updateData();
+        }
+    };
+
+    onItemLoaded = item => {
+        this.setState({item, loading: false})
     };
 
     onError = error => {
@@ -29,10 +34,10 @@ export default class MainInfoCard extends React.Component {
     };
 
     updateData = () => {
-        const id = starShipExistID[Math.floor(Math.random()*starShipExistID.length)];
-        this.swapiServide
-            .getStarships(id)
-            .then(this.onStarshipLoaded)
+        const {selectedItem} = this.props;
+        this.swapiService
+            .getSpecies(selectedItem)
+            .then(this.onItemLoaded)
             .catch(this.onError)
     };
 
@@ -41,7 +46,7 @@ export default class MainInfoCard extends React.Component {
         const {loading, error} = this.state;
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <StarshipDetails starship={this.state.starship}/> : null;
+        const content = !(loading || error) ? <SpeciesDetails item ={this.state.item}/> : null;
 
         return (<div className='card mb-3 main'>
                     <div className='row no-gutters'>

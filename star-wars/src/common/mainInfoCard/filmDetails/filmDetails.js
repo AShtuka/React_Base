@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({film: {title, release, director, producer, id, openingCrawl}}) => {
+export default ({item: {title, release, director, producer, id, openingCrawl}}) => {
     return (
         <div className="card mb-3">
             <div className="row no-gutters">

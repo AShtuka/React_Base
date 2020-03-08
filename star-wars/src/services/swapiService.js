@@ -40,7 +40,6 @@ export default class SwapiService extends React.Component {
 
     getStarships = async (id) => {
         const starship = await this.getResource(`starships/${id}/`);
-        console.log(starship);
         return this._transformStarship(starship);
     };
 
@@ -158,15 +157,15 @@ export default class SwapiService extends React.Component {
         return {
             id: this._extractId(species),
             name: species.name,
-            model: species.model,
-            starshipClass: species.starship_class,
-            speed: species.max_atmosphering_speed,
-            manufacturer: species.manufacturer,
-            cost: species.cost_in_credits,
-            length: species.length,
-            cargoCapacity: species.cargo_capacity,
-            crew: species.crew,
-            passengers: species.passengers
+            classification: species.classification,
+            designation: species.designation,
+            height: species.average_height,
+            lifespan: species.average_lifespan,
+            eye: species.eye_colors,
+            hair: species.hair_colors,
+            skin: species.skin_colors,
+            language: species.language,
+            homeworld: species.homeworld
         }
     }
 }

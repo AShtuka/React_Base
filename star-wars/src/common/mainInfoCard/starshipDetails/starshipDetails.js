@@ -1,6 +1,6 @@
 import React from "react";
 
-export default ({starship: {name, model, starshipClass, speed, id, manufacturer, cost, crew, length, passengers, cargoCapacity}}) => {
+export default ({item: {name, model, starshipClass, speed, id, manufacturer, cost, crew, length, passengers, cargoCapacity}}) => {
     return (
             <>
                 <div className="col-md-4">

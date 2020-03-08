@@ -1,0 +1,8 @@
+.main-container {
+    margin: 0 50px;
+}
+
+.item-page-navigation {
+    display: flex;
+    justify-content: space-between;
+}
