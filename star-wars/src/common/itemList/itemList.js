@@ -45,11 +45,15 @@ export default class ItemList extends React.Component {
     render() {
 
         const {itemList, loading, error} = this.state;
+        const {onItemSelected} = this.props;
 
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ?
-            itemList.map(({name, id}) => <Item key={id} name={name} id={id}/>) : null;
+            itemList.map(({name, id}) => <Item key={id}
+                                               name={name}
+                                               id={id}
+                                               onItemSelected={() => onItemSelected(id)} />) : null;
 
         return (
             <div className='row row-cols-1 row-cols-sm-2 row-cols-md-5'>

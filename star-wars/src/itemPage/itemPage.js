@@ -36,7 +36,7 @@ export default class ItemPage extends React.Component {
                     <Breadcrumbs/>
                     <Navigation/>
                 </div>
-                <ItemList/>
+                <ItemList onItemSelected={this.onItemSelected}/>
                 <MainInfoCard selectedItem={this.state.selectedItem}/>
                 <div className='row justify-content-center'>
                     <RelatedInfoCard onItemSelected={this.onItemSelected}/>

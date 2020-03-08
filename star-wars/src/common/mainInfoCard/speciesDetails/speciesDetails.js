@@ -13,12 +13,12 @@ export default ({item: {name,
                         id}}) => {
     return (
        <>
-           <div className="col-md-4">
+           <div className="col-md-3">
                <img src={`https://starwars-visualguide.com/assets/img/species/${id}.jpg`}
-                    className="card-img"
+                    className="card-img-details"
                     alt="Not Found"/>
            </div>
-           <div className="col-md-8">
+           <div className="col-md-9">
                <div className="card-body">
                    <h5 className="card-title">{name}</h5>
                    <ul className="list-group list-group-flush">
