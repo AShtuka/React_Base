@@ -7,37 +7,51 @@ import Spinner from "../spinner";
 
 export default class ItemList extends React.Component {
 
-    countItemsToDisplay = 8;
     swapiService = new SwapiService();
 
     state = {
         itemList: null,
         loading: true,
         error: false,
-        startPos: 0
+        next: null,
+        previous: null
     };
 
     onItemListLoaded = itemList => {
-        this.setState({itemList, loading: false});
+        this.setState({itemList: itemList.results,
+                             loading: false,
+                             next: itemList.navigationLink.next,
+                             previous: itemList.navigationLink.previous});
     };
 
     onError = error => {
         this.setState({error: true, loading: false});
     };
 
-    componentDidMount() {
+    getUrl = () => {
+
+    };
+
+    getData = (url) => {
         this.swapiService
-            .getAllSpecies()
+            .getAllSpecies(url)
             .then(this.onItemListLoaded)
             .catch(this.onError)
-    }
+    };
 
-    onContentChange = event => {
-        const direct = event.target.dataset.name;
-        if (direct === 'next') {
-            this.setState(({startPos}) => ({startPos: startPos += this.countItemsToDisplay}));
-        } else {
-            this.setState(({startPos}) => ({startPos: startPos -= this.countItemsToDisplay}));
+    componentDidMount() {
+        this.getData();
+    };
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.direct.countItemsToDisplay !== prevProps.direct.countItemsToDisplay) {
+            const direct = this.props.direct.direct.split(' ')[0];
+            this.setState({loading: true});
+            if (direct === "next") {
+                this.getData(prevState.next)
+            } else {
+                this.getData(prevState.previous)
+            }
         }
     };
 

@@ -48,12 +48,10 @@ export default class MainInfoCard extends React.Component {
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <SpeciesDetails item ={this.state.item}/> : null;
 
-        return (<div className='card main'>
-                    <div className='row'>
-                        {errorMassage}
-                        {spinner}
-                        {content}
-                    </div>
+        return (<div className='main-card-info-container'>
+                    {errorMassage}
+                    {spinner}
+                    {content}
                 </div>)
     }
 }

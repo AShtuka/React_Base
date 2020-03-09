@@ -53,9 +53,20 @@ export default class SwapiService extends React.Component {
         return this._transformVehicle(vehicle);
     };
 
-    getAllSpecies = async () => {
-        const res = await this.getResource('species/');
-        return res.results.map(this._transformSpecies);
+    getAllSpecies = async (url) => {
+        let res;
+        if (!url) {
+            res = await this.getResource('species/');
+        } else {
+            url = url.split('/');
+            res = await this.getResource(`species/${url[url.length - 1]}`);
+        }
+
+        const navigationLink = {next: res.next, previous: res.previous};
+        return {
+            navigationLink,
+            results: res.results.map(this._transformSpecies)
+        }
     };
 
     getSpecies = async (id) => {
