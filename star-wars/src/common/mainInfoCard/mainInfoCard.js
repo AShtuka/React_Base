@@ -4,6 +4,7 @@ import SwapiService from "../../services/swapiService";
 import SpeciesDetails from './speciesDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
+import RelatedInfoCard from "../relatedInfoCard";
 
 export default class MainInfoCard extends React.Component {
     swapiService = new SwapiService();
@@ -42,16 +43,30 @@ export default class MainInfoCard extends React.Component {
     };
 
     render() {
-
-        const {loading, error} = this.state;
+        let relatedInfo = [];
+        const {loading, error, item} = this.state;
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <SpeciesDetails item ={this.state.item}/> : null;
+        const content = !(loading || error) ? <SpeciesDetails item ={item}/> : null;
+        if (!(loading || error)) {
+             relatedInfo = item.relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
+                                                                                key={relatedItem.title}
+                                                                                title={relatedItem.title}
+                                                                                onItemSelected={this.onItemSelected}/>);
+        }
 
-        return (<div className='main-card-info-container'>
-                    {errorMassage}
-                    {spinner}
-                    {content}
-                </div>)
+
+        return (
+                <>
+                    <div className='main-card-info-container'>
+                        {errorMassage}
+                        {spinner}
+                        {content}
+                    </div>
+                    <div className='row justify-content-center'>
+                        {relatedInfo}
+                    </div>
+                </>
+        )
     }
 }

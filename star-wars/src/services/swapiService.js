@@ -13,12 +13,21 @@ export default class SwapiService extends React.Component {
         return res.json();
     };
 
-    getAllPeople = async () => {
+    getByUrl = async (url) => {
+        const res = await fetch(url);
+
+        if (!res.ok) {
+            throw new Error(`Could not fetch ${url}, received ${res.status}`);
+        }
+        return res.json();
+    };
+
+    getAllCharacters = async () => {
         const res = await this.getResource('people/');
         return res.results.map(this._transformPerson);
     };
 
-    getPerson = async (id) => {
+    getCharacter = async (id) => {
         const person =  await this.getResource(`people/${id}/`);
         return this._transformPerson(person);
     };
@@ -61,7 +70,7 @@ export default class SwapiService extends React.Component {
             url = url.split('/');
             res = await this.getResource(`species/${url[url.length - 1]}`);
         }
-
+        console.log(res.results);
         const navigationLink = {next: res.next, previous: res.previous};
         return {
             navigationLink,
@@ -108,7 +117,7 @@ export default class SwapiService extends React.Component {
     _transformFilm = film => {
         return {
             id: this._extractId(film),
-            title: film.title,
+            name: film.title,
             release: film.release_date,
             director: film.director,
             producer: film.producer,
@@ -176,7 +185,9 @@ export default class SwapiService extends React.Component {
             hair: species.hair_colors,
             skin: species.skin_colors,
             language: species.language,
-            homeworld: species.homeworld
+            homeworld: species.homeworld,
+            relatedInfo: [{data: species.people, title: 'Characters'},
+                          {data: species.films, title: 'Films'}],
         }
     }
 }

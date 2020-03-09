@@ -18,6 +18,11 @@ export default class ItemList extends React.Component {
     };
 
     onItemListLoaded = itemList => {
+        if (!itemList.navigationLink.next) {
+            this.props.getLastItems(true);
+        } else {
+            this.props.getLastItems(false);
+        }
         this.setState({itemList: itemList.results,
                              loading: false,
                              next: itemList.navigationLink.next,
