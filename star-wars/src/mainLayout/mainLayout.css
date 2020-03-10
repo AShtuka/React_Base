@@ -1,0 +1,13 @@
+.main-container {
+    margin: 0 50px;
+}
+
+.content {
+    min-height: calc(100vh - 74px);
+}
+
+@media screen and (max-width: 450px) {
+    .main-container {
+        margin: 0 10px;
+    }
+}

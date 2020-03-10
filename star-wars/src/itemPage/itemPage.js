@@ -1,6 +1,5 @@
 import React from "react";
 import ErrorIndicator from "../common/errorIndicator";
-import Logo from "../common/logo";
 import Breadcrumbs from "../common/breadcrumbs";
 import MainInfoCard from "../common/mainInfoCard";
 import ItemList from "../common/itemList";
@@ -53,14 +52,15 @@ export default class ItemPage extends React.Component {
         };
 
         return (
-            <div className='main-container'>
-                <Logo/>
+            <div>
                 <div className='item-page-navigation'>
                     <Breadcrumbs/>
                     <Navigation startPos={start} isEnd={isEnd} onContentChange={this.onContentChange}/>
                 </div>
-                <ItemList onItemSelected={this.onItemSelected} direct={{direct, countItemsToDisplay: startPos}} getLastItems={this.getLastItems}/>
-                <MainInfoCard selectedItem={this.state.selectedItem}/>
+                <ItemList onItemSelected={this.onItemSelected}
+                          direct={{direct, countItemsToDisplay: startPos}}
+                          getLastItems={this.getLastItems}/>
+                {/*<MainInfoCard selectedItem={this.state.selectedItem}/>*/}
             </div>
         )
     }

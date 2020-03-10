@@ -1,6 +1,9 @@
 import React from 'react';
+import HomePage from '../homePage';
 import ItemPage from "../itemPage";
+import ItemListPage from "../itemListPage/itemListPage";
 import ErrorIndicator from '../common/errorIndicator';
+import MainLayout from "../mainLayout";
 
 
 export default class App extends React.Component {
@@ -20,7 +23,9 @@ export default class App extends React.Component {
         };
 
         return (
-            <ItemPage/>
-        )
+                <MainLayout>
+                    <HomePage/>
+                </MainLayout>
+                )
     }
 }

@@ -1,0 +1,19 @@
+.home-page-img {
+    width: 100%;
+    margin: 15px 0;
+}
+
+.home-page-item {
+    position: relative;
+    cursor: pointer;
+}
+
+.home-page-item-label {
+    position: absolute;
+    bottom: 5%;
+    font-size: 22px;
+    font-weight: bold;
+    margin-left: 20px;
+    color: red;
+    padding: 5px 0;
+}

@@ -1,0 +1,20 @@
+.footer-first-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-second-row {
+    display: flex;
+    justify-content: space-around;
+}
+
+.linked-in-link {
+    margin: 0 10px;
+}
+
+@media screen and (max-width: 640px) {
+    .footer-first-row {
+        flex-direction: column;
+        align-items: center;
+    }
+}
