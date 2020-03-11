@@ -22,9 +22,18 @@ export default class SwapiService extends React.Component {
         return res.json();
     };
 
-    getAllCharacters = async () => {
-        const res = await this.getResource('people/');
-        return res.results.map(this._transformPerson);
+    getNextPage = async (url, categoryName) => {
+        let pageNumber = url.split('/');
+        pageNumber = pageNumber[pageNumber.length - 1];
+        return  await this.getResource(`${categoryName}/${pageNumber}`);
+    };
+
+    getAllCharacters = async (url) => {
+        const res = url ? await this.getNextPage(url, 'people') : await this.getResource('people/');
+        return {
+            navigationLink: {next: res.next, previous: res.previous},
+            results: res.results.map(this._transformPerson)
+        };
     };
 
     getCharacter = async (id) => {
@@ -32,9 +41,12 @@ export default class SwapiService extends React.Component {
         return this._transformPerson(person);
     };
 
-    getAllFilms = async () => {
-        const res = await this.getResource('films/');
-        return res.results.map(this._transformFilm);
+    getAllFilms = async (url) => {
+        const res = url ? await this.getNextPage(url, 'films') : await this.getResource('films/');
+        return {
+            navigationLink: {next: res.next, previous: res.previous},
+            results: res.results.map(this._transformFilm)
+        };
     };
 
     getFilm = async (id) => {
@@ -42,9 +54,12 @@ export default class SwapiService extends React.Component {
         return this._transformFilm(film);
     };
 
-    getAllStarships = async () => {
-        const res = await this.getResource('starships/');
-        return res.results.map(this._transformStarship);
+    getAllStarships = async (url) => {
+        const res = url ? await this.getNextPage(url, 'starships') : await this.getResource('starships/');
+        return {
+            navigationLink: {next: res.next, previous: res.previous},
+            results: res.results.map(this._transformStarship)
+        };
     };
 
     getStarships = async (id) => {
@@ -52,9 +67,12 @@ export default class SwapiService extends React.Component {
         return this._transformStarship(starship);
     };
 
-    getAllVehicles = async () => {
-        const res = await this.getResource('vehicles/');
-        return res.results.map(this._transformVehicle);
+    getAllVehicles = async (url) => {
+        const res = url ? await this.getNextPage(url, 'vehicles') : await this.getResource('vehicles/');
+        return {
+            navigationLink: {next: res.next, previous: res.previous},
+            results: res.results.map(this._transformVehicle)
+        };
     };
 
     getVehicles = async (id) => {
@@ -63,19 +81,11 @@ export default class SwapiService extends React.Component {
     };
 
     getAllSpecies = async (url) => {
-        let res;
-        if (!url) {
-            res = await this.getResource('species/');
-        } else {
-            url = url.split('/');
-            res = await this.getResource(`species/${url[url.length - 1]}`);
-        }
-        console.log(res.results);
-        const navigationLink = {next: res.next, previous: res.previous};
+        const res = url ? await this.getNextPage(url, 'species') : await this.getResource('species/');
         return {
-            navigationLink,
+            navigationLink: {next: res.next, previous: res.previous},
             results: res.results.map(this._transformSpecies)
-        }
+        };
     };
 
     getSpecies = async (id) => {
@@ -83,9 +93,12 @@ export default class SwapiService extends React.Component {
         return this._transformSpecies(speciest);
     };
 
-    getAllPlanets= async () => {
-        const res = await this.getResource('planets/');
-        return res.results.map(this._transformPlanet);
+    getAllPlanets= async (url) => {
+        const res = url ? await this.getNextPage(url, 'planets') : await this.getResource('planets/');
+        return {
+            navigationLink: {next: res.next, previous: res.previous},
+            results: res.results.map(this._transformPlanet)
+        };
     };
 
     getPlanet = async (id) => {
@@ -110,7 +123,10 @@ export default class SwapiService extends React.Component {
             length: starship.length,
             cargoCapacity: starship.cargo_capacity,
             crew: starship.crew,
-            passengers: starship.passengers
+            passengers: starship.passengers,
+            category: 'starships',
+            relatedInfo: [{data: starship.pilots, title: 'Pilots'},
+                {data: starship.films, title: 'Films'}],
         }
     };
 
@@ -121,7 +137,13 @@ export default class SwapiService extends React.Component {
             release: film.release_date,
             director: film.director,
             producer: film.producer,
-            openingCrawl: film.opening_crawl
+            openingCrawl: film.opening_crawl,
+            category: 'films',
+            relatedInfo: [{data: film.characters, title: 'Characters'},
+                          {data: film.planets, title: 'Planets'},
+                          {data: film.vehicles, title: 'Vehicles'},
+                          {data: film.starships, title: 'Starships'},
+                          {data: film.species, title: 'Species'}],
         }
     };
 
@@ -129,15 +151,20 @@ export default class SwapiService extends React.Component {
         return {
             id: this._extractId(person),
             name: person.name,
-            model: person.model,
-            starshipClass: person.starship_class,
-            speed: person.max_atmosphering_speed,
-            manufacturer: person.manufacturer,
+            birthYear: person.birth_year,
+            eye: person.eye_color,
+            gender: person.gender,
+            hair: person.hair_color,
             cost: person.cost_in_credits,
-            length: person.length,
-            cargoCapacity: person.cargo_capacity,
-            crew: person.crew,
-            passengers: person.passengers
+            height: person.height,
+            mass: person.mass,
+            skin: person.skin_color,
+            homeworld: person.homeworld,
+            category: 'characters',
+            relatedInfo: [{data: person.species, title: 'Species'},
+                          {data: person.films, title: 'Films'},
+                          {data: person.vehicles, title: 'Vehicles'},
+                          {data: person.starships, title: 'Starships'}],
         }
     };
 
@@ -145,15 +172,17 @@ export default class SwapiService extends React.Component {
         return {
             id: this._extractId(planet),
             name: planet.name,
-            model: planet.model,
-            starshipClass: planet.starship_class,
-            speed: planet.max_atmosphering_speed,
-            manufacturer: planet.manufacturer,
-            cost: planet.cost_in_credits,
-            length: planet.length,
-            cargoCapacity: planet.cargo_capacity,
-            crew: planet.crew,
-            passengers: planet.passengers
+            diameter: planet.diameter,
+            rotationPeriod: planet.rotation_period,
+            orbitalPeriod: planet.orbital_period,
+            gravity: planet.gravity,
+            population: planet.population,
+            climate: planet.climate,
+            terrain: planet.terrain,
+            surfaceWater: planet.surface_water,
+            category: 'planets',
+            relatedInfo: [{data: planet.residents, title: 'Residents'},
+                {data: planet.films, title: 'Films'}],
         }
     };
 
@@ -162,14 +191,18 @@ export default class SwapiService extends React.Component {
             id: this._extractId(vehicle),
             name: vehicle.name,
             model: vehicle.model,
-            starshipClass: vehicle.starship_class,
+            vehicleClass: vehicle.vehicle_class,
             speed: vehicle.max_atmosphering_speed,
             manufacturer: vehicle.manufacturer,
             cost: vehicle.cost_in_credits,
             length: vehicle.length,
             cargoCapacity: vehicle.cargo_capacity,
             crew: vehicle.crew,
-            passengers: vehicle.passengers
+            passengers: vehicle.passengers,
+            consumables: vehicle.consumables,
+            category: 'vehicles',
+            relatedInfo: [{data: vehicle.pilots, title: 'Pilots'},
+                {data: vehicle.films, title: 'Films'}],
         }
     };
 
@@ -186,6 +219,7 @@ export default class SwapiService extends React.Component {
             skin: species.skin_colors,
             language: species.language,
             homeworld: species.homeworld,
+            category: 'species',
             relatedInfo: [{data: species.people, title: 'Characters'},
                           {data: species.films, title: 'Films'}],
         }

@@ -16,10 +16,6 @@ export default class ItemListPage extends React.Component {
         isEnd: false
     };
 
-    onItemSelected = selectedItem => {
-        this.setState({selectedItem})
-    };
-
     componentDidCatch(error, errorInfo) {
         this.setState({unexpectedError: true});
     }
@@ -55,7 +51,7 @@ export default class ItemListPage extends React.Component {
                     <Breadcrumbs/>
                     <Navigation startPos={start} isEnd={isEnd} onContentChange={this.onContentChange}/>
                 </div>
-                <ItemList onItemSelected={this.onItemSelected}
+                <ItemList onItemSelected={this.props.onItemSelected} getData={this.props.getData}
                           direct={{direct, countItemsToDisplay: startPos}}
                           getLastItems={this.getLastItems}/>
             </div>

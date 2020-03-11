@@ -1,13 +1,11 @@
 import React from "react";
 import './main-info-card.css';
-import SwapiService from "../../services/swapiService";
 import SpeciesDetails from './speciesDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
 import RelatedInfoCard from "../relatedInfoCard";
 
 export default class MainInfoCard extends React.Component {
-    swapiService = new SwapiService();
 
     state = {
         item: {},
@@ -19,13 +17,6 @@ export default class MainInfoCard extends React.Component {
         this.updateData();
     };
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (this.props.selectedItem !== prevProps.selectedItem) {
-            this.setState({loading: true});
-            this.updateData();
-        }
-    };
-
     onItemLoaded = item => {
         this.setState({item, loading: false})
     };
@@ -35,9 +26,8 @@ export default class MainInfoCard extends React.Component {
     };
 
     updateData = () => {
-        const {selectedItem} = this.props;
-        this.swapiService
-            .getSpecies(selectedItem)
+        const {selectedItem, getData} = this.props;
+        getData(selectedItem)
             .then(this.onItemLoaded)
             .catch(this.onError)
     };
