@@ -155,7 +155,6 @@ export default class SwapiService extends React.Component {
             eye: person.eye_color,
             gender: person.gender,
             hair: person.hair_color,
-            cost: person.cost_in_credits,
             height: person.height,
             mass: person.mass,
             skin: person.skin_color,

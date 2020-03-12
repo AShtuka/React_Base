@@ -1,6 +1,6 @@
 import React from "react";
 import './main-info-card.css';
-import SpeciesDetails from './speciesDetails';
+import CardDetails from './cardDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
 import RelatedInfoCard from "../relatedInfoCard";
@@ -33,13 +33,16 @@ export default class MainInfoCard extends React.Component {
     };
 
     render() {
-        let relatedInfo = [];
-        const {loading, error, item} = this.state;
+        let relatedInfoArr = [];
+        const {loading, error, item:{relatedInfo, category, id, name, ...field}} = this.state;
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
-        const content = !(loading || error) ? <SpeciesDetails item ={item}/> : null;
+        const content = !(loading || error) ? <CardDetails field ={field}
+                                                              category={category}
+                                                              name={name}
+                                                              id={id}/> : null;
         if (!(loading || error)) {
-             relatedInfo = item.relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
+             relatedInfoArr = relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
                                                                                 key={relatedItem.title}
                                                                                 title={relatedItem.title}
                                                                                 onItemSelected={this.onItemSelected}/>);
@@ -54,7 +57,7 @@ export default class MainInfoCard extends React.Component {
                         {content}
                     </div>
                     <div className='row justify-content-center'>
-                        {relatedInfo}
+                        {relatedInfoArr}
                     </div>
                 </>
         )
