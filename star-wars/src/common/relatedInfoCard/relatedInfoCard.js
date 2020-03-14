@@ -33,7 +33,7 @@ export default class relatedCardInfo extends React.Component {
         const content = itemsList.map((itemUrl) => <CardItem key={itemUrl}
                                                              categoryName={title.toLowerCase()}
                                                              url={itemUrl}
-                                                             onItemSelected={onItemSelected}/>);
+                                                             onItemSelected={() => onItemSelected(itemUrl)}/>);
 
 
         if (content) {

@@ -66,7 +66,7 @@ export default class ItemList extends React.Component {
                                                          category={category}
                                                          name={name}
                                                          id={id}
-                                                         onItemSelected={() => onItemSelected(id, category)} />) : null;
+                                                         onItemSelected={() => onItemSelected(id, category, name)} />) : null;
 
         return (
             <div className='row row-cols-1 row-cols-sm-2 row-cols-md-5'>

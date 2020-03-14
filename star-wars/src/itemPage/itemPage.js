@@ -16,14 +16,16 @@ export default class ItemPage extends React.Component {
 
     render() {
 
+        const {selectedItemID, getData, categoryName, itemName, showSelectedPage, getDataByURL} = this.props;
+
         if (this.state.unexpectedError) {
             return <ErrorIndicator/>
         };
 
         return (
             <div>
-                <Breadcrumbs/>
-                <MainInfoCard selectedItem={this.props.selectedItem} getData={this.props.getData}/>
+                <Breadcrumbs categoryName={categoryName} itemName={itemName} showSelectedPage={showSelectedPage}/>
+                <MainInfoCard selectedItemID={selectedItemID} getData={getData} getDataByURL={getDataByURL}/>
             </div>
         )
     }

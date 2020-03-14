@@ -10,7 +10,8 @@ export default class MainInfoCard extends React.Component {
     state = {
         item: {},
         loading: true,
-        error: false
+        error: false,
+        url: null
     };
 
     componentDidMount() {
@@ -26,10 +27,14 @@ export default class MainInfoCard extends React.Component {
     };
 
     updateData = () => {
-        const {selectedItem, getData} = this.props;
-        getData(selectedItem)
+        const {selectedItemID, getData, getDataByURL} = this.props;
+        getData(selectedItemID)
             .then(this.onItemLoaded)
             .catch(this.onError)
+    };
+
+    onItemSelected = url => {
+        console.log(url)
     };
 
     render() {
@@ -38,14 +43,14 @@ export default class MainInfoCard extends React.Component {
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <CardDetails field ={field}
-                                                              category={category}
-                                                              name={name}
-                                                              id={id}/> : null;
+                                                           category={category}
+                                                           name={name}
+                                                           id={id}/> : null;
         if (!(loading || error)) {
              relatedInfoArr = relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
-                                                                                key={relatedItem.title}
-                                                                                title={relatedItem.title}
-                                                                                onItemSelected={this.onItemSelected}/>);
+                                                                              key={relatedItem.title}
+                                                                              title={relatedItem.title}
+                                                                              onItemSelected={this.onItemSelected}/>);
         }
 
 

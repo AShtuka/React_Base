@@ -36,15 +36,18 @@ export default class RelatedCardItem extends React.Component {
 
 
     render() {
-        const {url, categoryName} = this.props;
-        const id = this._extractId(url);
-        const {onItemSelected} = this.props;
+        const {url, categoryName, onItemSelected} = this.props;
         const {item, loading, error} = this.state;
+        const id = this._extractId(url);
+        let category = categoryName;
+        if (category === 'pilots' || category ==='residents') {
+            category = 'characters';
+        }
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ?
             (<div className="card">
-                <img src={`https://starwars-visualguide.com/assets/img/${categoryName}/${id}.jpg`} className="card-img-top" alt="NOT FOUND" />
+                <img src={`https://starwars-visualguide.com/assets/img/${category}/${id}.jpg`} className="card-img-top" alt="NOT FOUND" />
                 <div className="card-body card-item">
                     <a href="#!" onClick={onItemSelected}>{item.name}{item.title}</a>
                 </div>

@@ -17,87 +17,87 @@ export default class App extends React.Component {
         showHomePage: true,
         showItemListPage: false,
         showItemPage: false,
-        selectedItem: null
+        selectedItemID: null,
+        categoryName: null,
+        itemName: null
     };
 
     componentDidCatch(error, errorInfo) {
         this.setState({unexpectedError: true});
     }
 
-    chooseCategory = category => {
+    getFunc = (category, itemID) => {
         switch (category) {
-            case 'character': {
-                this.getData = this.swapiService.getAllCharacters;
+            case 'character':
+            case 'characters': {
+                this.getData = itemID ? this.swapiService.getCharacter : this.swapiService.getAllCharacters;
                 break;
             }
             case 'films': {
-                this.getData = this.swapiService.getAllFilms;
+                this.getData = itemID ? this.swapiService.getFilm : this.swapiService.getAllFilms;
                 break;
             }
             case 'species': {
-                this.getData = this.swapiService.getAllSpecies;
+                this.getData = itemID ? this.swapiService.getSpecies : this.swapiService.getAllSpecies;
                 break;
             }
             case 'starships': {
-                this.getData = this.swapiService.getAllStarships;
+                this.getData = itemID ? this.swapiService.getStarships : this.swapiService.getAllStarships;
                 break;
             }
             case 'vehicles': {
-                this.getData = this.swapiService.getAllVehicles;
+                this.getData = itemID ? this.swapiService.getVehicles : this.swapiService.getAllVehicles;
                 break;
             }
             case 'planets': {
-                this.getData = this.swapiService.getAllPlanets;
+                this.getData = itemID ? this.swapiService.getPlanet : this.swapiService.getAllPlanets;
                 break;
             }
             default: return null
         }
-        this.setState({showHomePage: false, showItemListPage: true})
     };
 
-    onItemSelected = (selectedItem, category) => {
-        switch (category) {
-            case 'characters': {
-                this.getData = this.swapiService.getCharacter;
-                break;
-            }
-            case 'films': {
-                this.getData = this.swapiService.getFilm;
-                break;
-            }
-            case 'species': {
-                this.getData = this.swapiService.getSpecies;
-                break;
-            }
-            case 'starships': {
-                this.getData = this.swapiService.getStarships;
-                break;
-            }
-            case 'vehicles': {
-                this.getData = this.swapiService.getVehicles;
-                break;
-            }
-            case 'planets': {
-                this.getData = this.swapiService.getPlanet;
-                break;
-            }
-            default: return null
+    chooseCategory = category => {
+        this.getFunc(category);
+        this.setState({showHomePage: false, showItemListPage: true, categoryName: category})
+    };
+
+    onItemSelected = (selectedItemID, category, name) => {
+        this.getFunc(category, selectedItemID);
+        this.setState({showItemPage: true, showItemListPage: false, showHomePage: false, selectedItemID, categoryName: category, itemName: name})
+    };
+
+    showSelectedPage = (categoryName, itemName) => {
+        if (!itemName) {
+            this.setState({showItemPage: false, showItemListPage: false, showHomePage: true})
+        } else {
+            this.chooseCategory(categoryName);
         }
-        this.setState({showItemPage: true, showItemListPage: false, selectedItem})
+    };
+
+    getDataByURL = () => {
+        return this.swapiService.getByUrl;
     };
 
     render() {
 
-        const {showHomePage, showItemListPage, selectedItem} = this.state;
+        const {showHomePage, showItemListPage, selectedItemID, categoryName, itemName} = this.state;
 
         let content = null;
         if (showHomePage) {
             content = <HomePage chooseCategory={this.chooseCategory}/>
         } else if (showItemListPage) {
             content = <ItemListPage getData={this.getData}
-                                    onItemSelected={this.onItemSelected}/>
+                                    onItemSelected={this.onItemSelected}
+                                    categoryName={categoryName}
+                                    showSelectedPage={this.showSelectedPage}/>
         } else {
-            content = <ItemPage getData={this.getData} selectedItem={selectedItem}/>
+            content = <ItemPage getData={this.getData}
+                                selectedItemID={selectedItemID}
+                                categoryName={categoryName}
+                                itemName={itemName}
+                                showSelectedPage={this.showSelectedPage}
+                                getDataByURL={this.getDataByURL}/>
         }
 
         if (this.state.unexpectedError) {

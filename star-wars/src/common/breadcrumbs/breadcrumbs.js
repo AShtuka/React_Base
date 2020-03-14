@@ -1,13 +1,22 @@
 import React from "react";
 import './breadcrumbs.css';
 
-export default () => {
+export default ({categoryName, itemName, showSelectedPage}) => {
+    const categoryLink = itemName ?
+        <li className="breadcrumb-item">
+            <a href="#!" onClick={() => showSelectedPage(categoryName, itemName)}>{categoryName}</a>
+        </li>
+        :
+        <li className="breadcrumb-item active" aria-current="page">{categoryName}</li>;
+
+    const itemLink = itemName ? <li className="breadcrumb-item active" aria-current="page">{itemName}</li> : null;
+
     return (
             <nav aria-label="breadcrumb">
                 <ol className="breadcrumb">
-                    <li className="breadcrumb-item"><a href="#!">Home</a></li>
-                    <li className="breadcrumb-item"><a href="#!">Library</a></li>
-                    <li className="breadcrumb-item active" aria-current="page">Data</li>
+                    <li className="breadcrumb-item"><a href="#!" onClick={() => showSelectedPage(categoryName)}>Home</a></li>
+                    {categoryLink}
+                    {itemLink}
                 </ol>
             </nav>
             )

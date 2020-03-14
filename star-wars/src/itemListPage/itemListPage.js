@@ -35,6 +35,8 @@ export default class ItemListPage extends React.Component {
 
     render() {
 
+        const {onItemSelected, getData, categoryName, showSelectedPage} = this.props;
+
         const {startPos, direct, isEnd} = this.state;
         let start = 0;
         if (startPos > 0) {
@@ -48,10 +50,10 @@ export default class ItemListPage extends React.Component {
         return (
             <div>
                 <div className='item-page-navigation'>
-                    <Breadcrumbs/>
+                    <Breadcrumbs categoryName={categoryName} showSelectedPage={showSelectedPage}/>
                     <Navigation startPos={start} isEnd={isEnd} onContentChange={this.onContentChange}/>
                 </div>
-                <ItemList onItemSelected={this.props.onItemSelected} getData={this.props.getData}
+                <ItemList onItemSelected={onItemSelected} getData={getData}
                           direct={{direct, countItemsToDisplay: startPos}}
                           getLastItems={this.getLastItems}/>
             </div>
