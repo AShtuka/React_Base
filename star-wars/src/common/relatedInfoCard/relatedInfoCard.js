@@ -1,7 +1,8 @@
 import React from "react";
 import './related-info-card.css'
 import CardItem from './cardItem';
-import Navigation from '../navigation';
+import Navigation from '../navigation'
+import ErrorBoundary from "../errorBoundary";
 
 export default class relatedCardInfo extends React.Component {
 
@@ -27,13 +28,14 @@ export default class relatedCardInfo extends React.Component {
         let isEnd = false;
         let navigationPanel = null;
         const {startPos} = this.state;
-        const {onItemSelected, title, itemsList} = this.props;
+        const {onItemSelected, title, itemsList, getImage} = this.props;
 
 
         const content = itemsList.map((itemUrl) => <CardItem key={itemUrl}
                                                              categoryName={title.toLowerCase()}
                                                              url={itemUrl}
-                                                             onItemSelected={() => onItemSelected(itemUrl)}/>);
+                                                             onItemSelected={() => onItemSelected(itemUrl)}
+                                                             getImage={getImage}/>);
 
 
         if (content) {
@@ -49,17 +51,19 @@ export default class relatedCardInfo extends React.Component {
         };
 
         return (
-            <div className='col-md-6'>
-                <div className="card">
-                    <div className="card-header">
-                        Related {title}
+            <ErrorBoundary>
+                <div className='col-md-6'>
+                    <div className="card">
+                        <div className="card-header">
+                            Related {title}
+                        </div>
+                        <div className="card-body row">
+                            {itemsToDisplay}
+                        </div>
+                        {navigationPanel}
                     </div>
-                    <div className="card-body row">
-                        {itemsToDisplay}
-                    </div>
-                    {navigationPanel}
                 </div>
-            </div>
+            </ErrorBoundary>
         )
     }
 };

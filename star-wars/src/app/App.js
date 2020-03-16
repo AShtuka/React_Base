@@ -2,9 +2,9 @@ import React from 'react';
 import HomePage from '../homePage';
 import ItemPage from "../itemPage";
 import ItemListPage from "../itemListPage/itemListPage";
-import ErrorIndicator from '../common/errorIndicator';
 import MainLayout from "../mainLayout";
 import SwapiService from "../services/swapiService";
+import ErrorBoundary from "../common/errorBoundary";
 
 
 export default class App extends React.Component {
@@ -13,7 +13,6 @@ export default class App extends React.Component {
     swapiService = new SwapiService();
 
     state = {
-        unexpectedError: false,
         showHomePage: true,
         showItemListPage: false,
         showItemPage: false,
@@ -21,10 +20,6 @@ export default class App extends React.Component {
         categoryName: null,
         itemName: null
     };
-
-    componentDidCatch(error, errorInfo) {
-        this.setState({unexpectedError: true});
-    }
 
     getFunc = (category, itemID) => {
         switch (category) {
@@ -79,35 +74,40 @@ export default class App extends React.Component {
         return this.swapiService.getByUrl;
     };
 
+    getImage = this.swapiService.getImage;
+
     render() {
 
+        let content = null;
+
+        const {getData, getImage, showSelectedPage} = this;
         const {showHomePage, showItemListPage, selectedItemID, categoryName, itemName} = this.state;
 
-        let content = null;
         if (showHomePage) {
-            content = <HomePage chooseCategory={this.chooseCategory}/>
+            content = <HomePage chooseCategory={this.chooseCategory}
+                                getImage={getImage}/>
         } else if (showItemListPage) {
-            content = <ItemListPage getData={this.getData}
+            content = <ItemListPage getData={getData}
                                     onItemSelected={this.onItemSelected}
                                     categoryName={categoryName}
-                                    showSelectedPage={this.showSelectedPage}/>
+                                    showSelectedPage={showSelectedPage}
+                                    getImage={getImage}/>
         } else {
-            content = <ItemPage getData={this.getData}
+            content = <ItemPage getData={getData}
                                 selectedItemID={selectedItemID}
                                 categoryName={categoryName}
                                 itemName={itemName}
-                                showSelectedPage={this.showSelectedPage}
-                                getDataByURL={this.getDataByURL}/>
+                                showSelectedPage={showSelectedPage}
+                                getDataByURL={this.getDataByURL}
+                                getImage={getImage}/>
         }
 
-        if (this.state.unexpectedError) {
-            return <ErrorIndicator/>
-        };
-
         return (
-                <MainLayout>
-                    {content}
-                </MainLayout>
+                    <ErrorBoundary>
+                        <MainLayout>
+                            {content}
+                        </MainLayout>
+                    </ErrorBoundary>
                 )
     }
 }

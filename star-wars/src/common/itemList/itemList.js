@@ -3,6 +3,7 @@ import './itemList.css';
 import Item from './item';
 import ErrorIndicator from '../errorIndicator';
 import Spinner from "../spinner";
+import ErrorBoundary from "../errorBoundary";
 
 export default class ItemList extends React.Component {
 
@@ -57,7 +58,7 @@ export default class ItemList extends React.Component {
     render() {
 
         const {itemList, loading, error} = this.state;
-        const {onItemSelected} = this.props;
+        const {onItemSelected, getImage} = this.props;
 
         const errorMassage = error ? <ErrorIndicator/> : null;
         const spinner = loading ? <Spinner /> : null;
@@ -66,14 +67,17 @@ export default class ItemList extends React.Component {
                                                          category={category}
                                                          name={name}
                                                          id={id}
-                                                         onItemSelected={() => onItemSelected(id, category, name)} />) : null;
+                                                         onItemSelected={() => onItemSelected(id, category, name)}
+                                                         getImage={getImage} />) : null;
 
         return (
-            <div className='row row-cols-1 row-cols-sm-2 row-cols-md-5'>
-                {errorMassage}
-                {spinner}
-                {content}
-            </div>
+            <ErrorBoundary>
+                <div className='row row-cols-1 row-cols-sm-2 row-cols-md-5'>
+                    {errorMassage}
+                    {spinner}
+                    {content}
+                </div>
+            </ErrorBoundary>
         )
     }
 }

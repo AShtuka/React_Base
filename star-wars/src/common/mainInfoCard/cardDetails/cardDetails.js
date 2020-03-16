@@ -1,16 +1,19 @@
 import React from "react";
+import ErrorBoundary from "../../errorBoundary";
 
-export default ({name, id, category, field}) => {
+export default ({name, id, category, field, getImage}) => {
 
     const content = [];
     for (let key in field) {
         content.push(<li key={[key]} className="list-group-item">{[key].toString().toUpperCase()}: {field[key]} </li>)
     }
 
+    const image = getImage(category, id);
+
     return (
-       <>
+       <ErrorBoundary>
            <div className='main-card-info-img'>
-               <img src={`https://starwars-visualguide.com/assets/img/${category}/${id}.jpg`}
+               <img src={image}
                     className="card-img-details"
                     alt="Not Found"/>
            </div>
@@ -20,6 +23,6 @@ export default ({name, id, category, field}) => {
                    {content}
                </ul>
            </div>
-       </>
+       </ErrorBoundary>
     )
 }

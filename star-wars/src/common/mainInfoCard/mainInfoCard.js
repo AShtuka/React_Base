@@ -4,6 +4,7 @@ import CardDetails from './cardDetails';
 import Spinner from '../spinner';
 import ErrorIndicator from '../errorIndicator';
 import RelatedInfoCard from "../relatedInfoCard";
+import ErrorBoundary from "../errorBoundary";
 
 export default class MainInfoCard extends React.Component {
 
@@ -45,17 +46,19 @@ export default class MainInfoCard extends React.Component {
         const content = !(loading || error) ? <CardDetails field ={field}
                                                            category={category}
                                                            name={name}
-                                                           id={id}/> : null;
+                                                           id={id}
+                                                           getImage={this.props.getImage}/> : null;
         if (!(loading || error)) {
              relatedInfoArr = relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
                                                                               key={relatedItem.title}
                                                                               title={relatedItem.title}
+                                                                              getImage={this.props.getImage}
                                                                               onItemSelected={this.onItemSelected}/>);
         }
 
 
         return (
-                <>
+                <ErrorBoundary>
                     <div className='main-card-info-container'>
                         {errorMassage}
                         {spinner}
@@ -64,7 +67,7 @@ export default class MainInfoCard extends React.Component {
                     <div className='row justify-content-center'>
                         {relatedInfoArr}
                     </div>
-                </>
+                </ErrorBoundary>
         )
     }
 }

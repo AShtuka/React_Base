@@ -1,4 +1,5 @@
 import React from "react";
+import ErrorBoundary from "../errorBoundary";
 
 export default ({startPos, isEnd, onContentChange}) => {
 
@@ -21,11 +22,13 @@ export default ({startPos, isEnd, onContentChange}) => {
         </li>;
 
     return (
-        <nav>
-            <ul className="pagination">
-                {firstElement}
-                {secondElement}
-            </ul>
-        </nav>
+        <ErrorBoundary>
+            <nav>
+                <ul className="pagination">
+                    {firstElement}
+                    {secondElement}
+                </ul>
+            </nav>
+        </ErrorBoundary>
     );
 }

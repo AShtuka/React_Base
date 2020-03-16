@@ -3,6 +3,7 @@ import React from "react";
 export default class SwapiService extends React.Component {
 
     _apiBase = 'https://swapi.co/api/';
+    _imageBase = 'https://starwars-visualguide.com/assets/img/';
 
     getResource = async (url) => {
         const res = await fetch(`${this._apiBase}${url}`);
@@ -20,6 +21,10 @@ export default class SwapiService extends React.Component {
             throw new Error(`Could not fetch ${url}, received ${res.status}`);
         }
         return res.json();
+    };
+
+    getImage = (category, id) => {
+        return `${this._imageBase}${category}/${id}.jpg`;
     };
 
     getNextPage = async (url, categoryName) => {

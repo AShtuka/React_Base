@@ -1,5 +1,4 @@
 import React from "react";
-import ErrorIndicator from "../common/errorIndicator";
 import Breadcrumbs from "../common/breadcrumbs";
 import ItemList from "../common/itemList";
 import Navigation from '../common/navigation';
@@ -10,15 +9,10 @@ export default class ItemListPage extends React.Component {
     countItemsToDisplay = 10;
 
     state = {
-        unexpectedError: false,
         direct: null,
         startPos: 0,
         isEnd: false
     };
-
-    componentDidCatch(error, errorInfo) {
-        this.setState({unexpectedError: true});
-    }
 
     onContentChange = event => {
         const direct = event.target.dataset.name;
@@ -35,17 +29,13 @@ export default class ItemListPage extends React.Component {
 
     render() {
 
-        const {onItemSelected, getData, categoryName, showSelectedPage} = this.props;
+        const {onItemSelected, getData, categoryName, showSelectedPage, getImage} = this.props;
 
         const {startPos, direct, isEnd} = this.state;
         let start = 0;
         if (startPos > 0) {
             start = startPos;
         }
-
-        if (this.state.unexpectedError) {
-            return <ErrorIndicator/>
-        };
 
         return (
             <div>
@@ -55,7 +45,8 @@ export default class ItemListPage extends React.Component {
                 </div>
                 <ItemList onItemSelected={onItemSelected} getData={getData}
                           direct={{direct, countItemsToDisplay: startPos}}
-                          getLastItems={this.getLastItems}/>
+                          getLastItems={this.getLastItems}
+                          getImage={getImage}/>
             </div>
         )
     }
