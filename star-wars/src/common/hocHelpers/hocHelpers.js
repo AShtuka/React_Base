@@ -31,7 +31,6 @@ export default (View, getData, selectedItemID) => {
 
         render() {
             const {loading, error, item} = this.state;
-            console.log('hoc');
             const errorMassage = error ? <ErrorIndicator/> : null;
             const spinner = loading ? <Spinner /> : null;
             const content = !(loading || error) ? <View {...this.props} item={item}/> : null;
