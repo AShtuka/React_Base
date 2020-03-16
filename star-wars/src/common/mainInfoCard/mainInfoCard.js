@@ -28,7 +28,7 @@ export default class MainInfoCard extends React.Component {
     };
 
     updateData = () => {
-        const {selectedItemID, getData, getDataByURL} = this.props;
+        const {selectedItemID, getData} = this.props;
         getData(selectedItemID)
             .then(this.onItemLoaded)
             .catch(this.onError)
@@ -52,8 +52,8 @@ export default class MainInfoCard extends React.Component {
              relatedInfoArr = relatedInfo.map(relatedItem => <RelatedInfoCard itemsList={relatedItem.data}
                                                                               key={relatedItem.title}
                                                                               title={relatedItem.title}
-                                                                              getImage={this.props.getImage}
-                                                                              onItemSelected={this.onItemSelected}/>);
+                                                                              onItemSelected={this.onItemSelected}
+                                                                              getImage={this.props.getImage}/>);
         }
 
 

@@ -98,7 +98,6 @@ export default class App extends React.Component {
                                 categoryName={categoryName}
                                 itemName={itemName}
                                 showSelectedPage={showSelectedPage}
-                                getDataByURL={this.getDataByURL}
                                 getImage={getImage}/>
         }
 

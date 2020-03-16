@@ -3,7 +3,7 @@ import Breadcrumbs from "../common/breadcrumbs";
 import MainInfoCard from "../common/mainInfoCard";
 import './itemPage.css'
 
-export default ({selectedItemID, getData, categoryName, itemName, showSelectedPage, getDataByURL, getImage}) => {
+export default ({selectedItemID, getData, categoryName, itemName, showSelectedPage, getImage}) => {
 
     return (
             <>
@@ -12,7 +12,6 @@ export default ({selectedItemID, getData, categoryName, itemName, showSelectedPa
                              showSelectedPage={showSelectedPage}/>
                 <MainInfoCard selectedItemID={selectedItemID}
                               getData={getData}
-                              getDataByURL={getDataByURL}
                               getImage={getImage}/>
             </>
         )
