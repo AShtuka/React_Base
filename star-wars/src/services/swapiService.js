@@ -2,7 +2,7 @@ import React from "react";
 
 export default class SwapiService extends React.Component {
 
-    _apiBase = 'https://swapi.co/api/';
+    _apiBase = 'https://swapi.dev/api/';
     _imageBase = 'https://starwars-visualguide.com/assets/img/';
 
     getResource = async (url) => {
